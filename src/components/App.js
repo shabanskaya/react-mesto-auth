@@ -12,6 +12,9 @@ import api from '../utils/api'
 import {CurrentUserContext} from '../contexts/CurrentUserContext'
 import { Route, Switch, Redirect } from "react-router-dom";
 import ProtectedRoute from './ProtectedRoute'
+import Login from './Login'
+import Register from "./Register";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false)
@@ -21,6 +24,8 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({})
   const [currentUser, setCurrentUser] = React.useState({})
   const [loggedIn, setLoggedIn] = React.useState(false)
+  const [isStatusOkInfoTooltipOpen, setIsStatusOkInfoTooltipOpen] = React.useState(false)
+  const [isStatusErrorInfoTooltipOpen, setIsStatusErrorInfoTooltipOpen] = React.useState(false)
 
   const [cards, setCards] = React.useState([])
 	
@@ -106,8 +111,21 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
           <Switch>
-            <ProtectedRoute loggedIn={loggedIn}>
-              <Header />
+            
+            <Route path="/sign-in">
+              <Header linkTo="/sign-up" linkText="Регистрация"/>
+              <Login loggedIn={loggedIn} />
+            </Route>
+
+            <Route path="/sign-up">
+              <Header linkTo="/sign-in" linkText="Войти"/>
+              <Register />
+              <InfoTooltip isOpen={isStatusOkInfoTooltipOpen} onClose={closeAllPopups} status="ok" />
+              <InfoTooltip isOpen={isStatusErrorInfoTooltipOpen} onClose={closeAllPopups} status="error" />
+            </Route>
+
+            <ProtectedRoute exact path="/" loggedIn={loggedIn}>
+              <Header linkTo="/sign-in" linkText="Выйти"/>
               <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
               <Footer />
               <EditProfilePopup onUpdateUser={handleUpdateUser} onClose={closeAllPopups} isOpen = {isEditProfilePopupOpen} />
@@ -117,16 +135,10 @@ function App() {
               <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
             </ProtectedRoute>
 
-            <Route path="/sing-in">
-            </Route>
-
-            <Route path="/sing-up">
-            </Route>
-
             <Route path="/">
-              {loggedIn ? (<Redirect to="/" />) : (<Redirect to="/sign-in" />)}
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
-            
+
           </Switch>
         </div>
       </CurrentUserContext.Provider>
