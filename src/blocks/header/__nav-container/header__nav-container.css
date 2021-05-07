@@ -1,11 +1,11 @@
 .header__nav-container {
-	margin: 51px 0 46px;
+	margin: 0;
 	padding: 0;
 }
 
 
 @media screen and (max-width: 900px) {
 	.header__nav-container{
-		margin: 34px 30px;
+		margin: 0 30px;
 	}
 }

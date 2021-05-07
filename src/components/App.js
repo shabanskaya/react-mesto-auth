@@ -15,7 +15,7 @@ import ProtectedRoute from './ProtectedRoute'
 import Login from './Login'
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
-import { checkToken, register, login } from '../auth.js';
+import { checkToken, register, login } from '../utils/auth.js';
 
 
 function App() {
