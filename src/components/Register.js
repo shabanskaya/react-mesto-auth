@@ -1,11 +1,9 @@
 import {Link} from "react-router-dom";
 import React from "react";
-import { register } from "../auth";
 
 function Register(props) {
 
 	const [inputValues, setInputValues] = React.useState({password: '', email: ''})
-
 	function handleChange (e) {
     const {name, value} = e.target;
     setInputValues({...inputValues,

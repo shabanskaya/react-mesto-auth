@@ -179,7 +179,7 @@ function App() {
             
             <Route path="/sign-in">
               <Header onClick={moveToRegister} linkText="Регистрация"/>
-              <Login onResult={handleOpenInfo} onLogin={onLogin}/>
+              <Login onLogin={onLogin}/>
             </Route>
 
             <Route path="/sign-up">

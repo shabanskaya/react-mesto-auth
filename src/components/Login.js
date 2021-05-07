@@ -1,6 +1,4 @@
-import { useHistory} from "react-router-dom";
 import React from "react";
-import { login } from "../auth";
 
 function Login(props) {
 	const [inputValues, setInputValues] = React.useState({password: '', email: ''})
@@ -17,14 +15,6 @@ function Login(props) {
 		const { password, email } = {...inputValues};
 		setInputValues({email: '', password: ''})
 		props.onLogin(password, email);
-		/*
-    login(password, email).then((data) => {
-				if (data?.token){
-					setToken(data.token)
-				} else {
-					props.onResult("error")
-				}
-			}).catch((err) => console.log(err));*/
 	}
 	
 	return (
