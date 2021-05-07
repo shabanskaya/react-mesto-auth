@@ -7,7 +7,9 @@
 	margin: 51px 0 46px 24px;
 	padding: 0;
 	cursor: pointer;
-
+	background-color: black;
+	border: none;
+	outline: none;
 }
 .header__link:hover {
 	opacity: 0.6;

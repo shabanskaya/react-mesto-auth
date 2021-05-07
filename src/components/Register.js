@@ -5,13 +5,6 @@ import { register } from "../auth";
 function Register(props) {
 
 	const [inputValues, setInputValues] = React.useState({password: '', email: ''})
-	const [status, setStatus] = React.useState("");
-
-	React.useEffect((() => {
-		if (status==="ok") {
-			props.onRegister()
-		}
-	}), [status])
 
 	function handleChange (e) {
     const {name, value} = e.target;
@@ -22,15 +15,8 @@ function Register(props) {
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		let { password, email } = {...inputValues};
-      register(password, email).then((res) => {
-        if(!res.message){
-          setStatus("ok")
-        } else {
-					props.onResult("error");
-          setStatus("error")	
-        }
-      });
+		const { password, email } = {...inputValues};
+		props.onRegister(password, email);
 	}
 
 	return (

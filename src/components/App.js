@@ -15,7 +15,7 @@ import ProtectedRoute from './ProtectedRoute'
 import Login from './Login'
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
-import { checkToken } from '../auth.js';
+import { checkToken, register, login } from '../auth.js';
 
 
 function App() {
@@ -45,18 +45,18 @@ function App() {
 		if (!isLiked) {
     	api.putLike(card._id).then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    	});
+    	}).catch((err) => console.log(err));
 		} else {
 			api.deleteLike(card._id).then((newCard) => {
 				setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-			});
+			}).catch((err) => console.log(err));
 		}
 	}
 
 	function handleCardDelete(card) {
 		api.deleteCard(card._id).then((newCard) => {
 			setCards((state) => state.filter((c) => c._id !== card._id));
-		});
+		}).catch((err) => console.log(err));
 	}
 
 	React.useEffect((() => {
@@ -121,16 +121,30 @@ function App() {
     history.push('/sign-in');
   }
 
-  function onRegister() {
-    moveToLogin()
-    handleOpenInfo("ok")
+  function onRegister(password, email) {
+    register(password, email).then((res) => {
+      if(!res.message && !res.error){
+        moveToLogin()
+        handleOpenInfo("ok")
+      } else {
+        handleOpenInfo("error")	
+      }
+    }).catch((err) => console.log(err));    
   }
 
-  function onLogin (mail, token) {
-    localStorage.setItem('jwt', token);
-    setLoggedIn(true);
-    setEmail(mail);
-    history.push('/');
+  function onLogin (password, email) {
+    login(password, email).then((data) => {
+      if (data?.token){
+        localStorage.setItem('jwt', data.token)
+        setLoggedIn(true);
+        setEmail(email);
+        history.push('/');
+      } else {
+        handleOpenInfo("error")	
+      }
+    }).catch((err) => console.log(err));
+
+    
   }
 
   function signOut() {
@@ -148,7 +162,7 @@ function App() {
           history.push("/");
           setEmail(res.data.email)
         }
-      }); 
+      }).catch((err) => console.log(err)); 
     }
   } 
 
@@ -170,7 +184,7 @@ function App() {
 
             <Route path="/sign-up">
               <Header onClick={moveToLogin} linkText="Войти"/>
-              <Register onResult={handleOpenInfo} onRegister={onRegister}/>
+              <Register onRegister={onRegister}/>
 
             </Route>
 

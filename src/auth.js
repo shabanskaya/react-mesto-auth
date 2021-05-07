@@ -11,7 +11,7 @@ export const register = (password, email) => {
   .then((response) => {
     return response.json();
   })
-  .catch((err) => console.log(err));
+  
 };
 
 
@@ -26,7 +26,7 @@ export const login = (password, email) => {
   .then((response) => {
     return response.json();
   })
-  .catch((err) => console.log(err));
+  
 };
 
 export const checkToken = (token) => {
@@ -39,5 +39,5 @@ export const checkToken = (token) => {
     }
   })
   .then(res => res.json())
-	.catch((err) => console.log(err));
+	
 }

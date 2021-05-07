@@ -4,15 +4,6 @@ import { login } from "../auth";
 
 function Login(props) {
 	const [inputValues, setInputValues] = React.useState({password: '', email: ''})
-	const [token, setToken] = React.useState("");
-	const history = useHistory();
-
-	React.useEffect((() => {
-		if (token) {
-			props.onLogin(inputValues.email, token);
-			setInputValues({username: '', password: ''})
-		}
-	}), [token]) 
 
 	function handleChange (e) {
     const {name, value} = e.target;
@@ -23,14 +14,17 @@ function Login(props) {
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		let { password, email } = {...inputValues};
+		const { password, email } = {...inputValues};
+		setInputValues({email: '', password: ''})
+		props.onLogin(password, email);
+		/*
     login(password, email).then((data) => {
 				if (data?.token){
 					setToken(data.token)
 				} else {
 					props.onResult("error")
 				}
-			})
+			}).catch((err) => console.log(err));*/
 	}
 	
 	return (
